@@ -1,5 +1,4 @@
-# File-Share
-## File Upload and Download Web Server Setup Instructions
+# **File-Share**: File Upload and Download Web Server Setup Instructions
 
 ## Prerequisites
 
