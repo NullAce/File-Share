@@ -47,38 +47,38 @@ chmod +x ./setup.sh
 
 1. **Upload files**
 
-- Access the server via http://localhost:3000 or what ever port you chose.
-- Use the provided form to upload files to the server.
+   - Access the server via http://localhost:3000 or what ever port you chose.
+   - Use the provided form to upload files to the server.
 
 2. **Download and Remove FIles**
 
-- The server will display a list of uploaded files.
-- Each file will have options to download or remove it from the server.
+   - The server will display a list of uploaded files.
+   - Each file will have options to download or remove it from the server.
 
 ## Code Explanation
 The core functionality of the server is implemented in the `server.js` file.
 
 1. **Dependencies**
-- `http`: Built-in Node.js module to create a server.
-- `formidable`: Module to handle file uploads.
-- `fs`: Built-in Node.js module to interact with the file system.
-- `path`: Built-in Node.js module to hangle and transform file paths.
+   - `http`: Built-in Node.js module to create a server.
+   - `formidable`: Module to handle file uploads.
+   - `fs`: Built-in Node.js module to interact with the file system.
+   - `path`: Built-in Node.js module to hangle and transform file paths.
 
 2. **File Upload Handling**
 
-- Handles file uploads via a form submission.
-- Stores uploaded files in the `fileupload` directory.
-- Ensures file names are sanitized to prevent path injection.
+   - Handles file uploads via a form submission.
+   - Stores uploaded files in the `fileupload` directory.
+   - Ensures file names are sanitized to prevent path injection.
 
 3. **Dynamic File Display**
 
-- Reads the `fileupload` directory to list all uploaded files.
-- Generates HTML to display the files with options to download or remove them.
+   - Reads the `fileupload` directory to list all uploaded files.
+   - Generates HTML to display the files with options to download or remove them.
 
 4. **File Download and Removal**
 
-- Provides routes to download and remove files.
-- Ensures file paths are sanitized and validated before performing any actions.
+   - Provides routes to download and remove files.
+   - Ensures file paths are sanitized and validated before performing any actions.
 
 ## Security
 - Path Sanitization: File names are sanitized to prevent path injection attacks.
