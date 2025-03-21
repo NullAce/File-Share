@@ -12,19 +12,21 @@ File-Share is a simple Node.js server that allows users to upload, download, and
 ## Versions
 
 The `latest` version is in the latest directory
-In the `latest/http/` folder it seperates the html from the javascript leading to more customization.
+In the `latest/html/` folder it seperates the html from the javascript leading to more customization.
 In the `latest/chief/` folder it is compressed into one file.
+The `archived` has old versions.
 
 ## Installation
 
 **wget the Repository**
    ```bash
-   wget https://github.com/NullAce/latest/http.zip
+   wget https://github.com/NullAce/latest.zip
    cd File-Share
    ```
 
-**Install Using Script**
+**Install With Script**
 The install commands are located in the setup.sh bash script.
+Move the `setup.sh` to your desired folder for setup.
 ```bash
 chmod +x ./setup.sh
 ./setup.sh
