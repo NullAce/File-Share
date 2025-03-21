@@ -11,10 +11,10 @@ File-Share is a simple Node.js server that allows users to upload, download, and
 
 ## Versions
 
-- The `latest` version is in the latest directory
+- The `latest/` version is in the latest directory
 - In the `latest/html/` folder it seperates the html from the javascript leading to more customization.
 - In the `latest/chief/` folder it is compressed into one file.
-- The `archived` has old versions.
+- The `archived/` has old versions.
 
 ## Installation
 
