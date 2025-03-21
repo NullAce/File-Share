@@ -9,33 +9,14 @@ File-Share is a simple Node.js server that allows users to upload, download, and
 - **File Removal**: Users can remove files from the server.
 - **File Display**: The server dynamically displays already uploaded files.
 
-## Manual Installation
-If you would like to install this without using the setup script.
+## Versions
 
-1. **Clone the Repository**
-   ```bash
-   git clone https://github.com/NullAce/File-Share.git
-   cd File-Share
-   ```
-   
-2. **Node.js**
-   Make sure node.js is properly installed.
-   ```bash
-   node -v
-   npm -v
-   ```
+The `latest` version is in the latest directory
+In the `latest/http/` folder it seperates the html from the javascript leading to more customization.
+In the `latest/chief/` folder it is compressed into one file.
 
-4. **Initialize project**
-   Run in the same folder as server.
-   ```bash
-   npm init -y
-   ```
+## Installation
 
-5. **Start Server**
-   ```bash
-   node server.js
-   ```
-   
 **Install Using Script**
 The install commands are located in the setup.sh bash script.
 ```bash
@@ -43,11 +24,38 @@ chmod +x ./setup.sh
 ./setup.sh
 ```
 
+**Install Without Script**
+If you would like to install this without using the setup script.
+
+1. **Clone the Repository**
+   ```bash
+   wget https://github.com/NullAce/latest/http.zip
+   cd File-Share
+   ```
+   
+2. **Node.js**
+   Make sure node.js is properly installed. https://nodejs.org/en/download
+   ```bash
+   node -v
+   npm -v
+   ```
+
+3. **Initialize project**
+   Run in the same folder as server of your choice.
+   ```bash
+   npm init -y
+   ```
+
+4. **Start Server**
+   ```bash
+   node server.js
+   ```
+
 ## Usage
 
 1. **Upload files**
 
-   - Access the server via http://localhost:3000 or what ever port you chose.
+   - Access the server via http://localhost:8080 or your port of choice.
    - Use the provided form to upload files to the server.
 
 2. **Download and Remove FIles**
@@ -85,4 +93,4 @@ The core functionality of the server is implemented in the `server.js` file.
 - Restricted Directory: All file operations are confined to the `fileupload` directory.
 
 ## Free Roam
-The `server.js` is meant to be a basic node.js file exchange server over your local internet. Everything can be edited and changed to be how you wish to use this for your own needs.
+The `server.js` is meant to be a basic Node.js file exchange server over your local internet. Everything can be edited and changed to be how you wish to use this for your own needs.
