@@ -17,6 +17,12 @@ In the `latest/chief/` folder it is compressed into one file.
 
 ## Installation
 
+**wget the Repository**
+   ```bash
+   wget https://github.com/NullAce/latest/http.zip
+   cd File-Share
+   ```
+
 **Install Using Script**
 The install commands are located in the setup.sh bash script.
 ```bash
@@ -26,27 +32,21 @@ chmod +x ./setup.sh
 
 **Install Without Script**
 If you would like to install this without using the setup script.
-
-1. **Clone the Repository**
-   ```bash
-   wget https://github.com/NullAce/latest/http.zip
-   cd File-Share
-   ```
    
-2. **Node.js**
+1. **Node.js**
    Make sure node.js is properly installed. https://nodejs.org/en/download
    ```bash
    node -v
    npm -v
    ```
 
-3. **Initialize project**
+2. **Initialize project**
    Run in the same folder as server of your choice.
    ```bash
    npm init -y
    ```
 
-4. **Start Server**
+3. **Start Server**
    ```bash
    node server.js
    ```
