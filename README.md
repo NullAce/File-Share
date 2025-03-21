@@ -9,23 +9,39 @@ File-Share is a simple Node.js server that allows users to upload, download, and
 - **File Removal**: Users can remove files from the server.
 - **File Display**: The server dynamically displays already uploaded files.
 
-## Installation
+## Manual Installation
+If you would like to install this without using the setup script.
 
 1. **Clone the Repository**
    ```bash
    git clone https://github.com/NullAce/File-Share.git
    cd File-Share
    ```
-2. **Install Dependencies**
-   The install commands are located in the setup.sh bash script.
+   
+2. **Node.js**
+   Make sure node.js is properly installed.
    ```bash
-   chmod +x ./setup.sh
-   ./setup.sh
+   node -v
+   npm -v
    ```
-3. **Manually Start Server**
+
+4. **Initialize project**
+   Run in the same folder as server.
+   ```bash
+   npm init -y
+   ```
+
+5. **Start Server**
    ```bash
    node server.js
    ```
+   
+**Install Using Script**
+The install commands are located in the setup.sh bash script.
+```bash
+chmod +x ./setup.sh
+./setup.sh
+```
 
 ## Usage
 
