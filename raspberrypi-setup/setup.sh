@@ -12,7 +12,7 @@ node -v # Should print "v22.14.0".
 npm -v # Should print "10.9.2".
 
 # Create the uploads directory
-mkdir uploads
+mkdir fileupload
 
 npm install formidable
 
