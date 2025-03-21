@@ -14,5 +14,7 @@ npm -v # Should print "10.9.2".
 # Create the uploads directory
 mkdir uploads
 
+npm install formidable
+
 # Start the server
 node server.js
