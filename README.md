@@ -26,7 +26,6 @@ File-Share is a simple Node.js server that allows users to upload, download, and
 **Setup**
    
 1. **Node.js**
-   Make sure node.js and npm is properly installed.
    ```bash
    sudo apt install nodejs
    sudo apt install npm
@@ -35,8 +34,8 @@ File-Share is a simple Node.js server that allows users to upload, download, and
    ```
 
 2. **Initialize project**
-   Run in the same folder of the server.js file.
    ```bash
+   # Run in the same folder of the server.js file.
    npm init -y
    ```
 
@@ -46,7 +45,6 @@ File-Share is a simple Node.js server that allows users to upload, download, and
    ```
 
 4. **Create uploads folder**
-   Folder that stores all uploaded files.
    ```bash
    mkdir fileupload
    ```
