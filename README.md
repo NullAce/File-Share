@@ -11,44 +11,47 @@ File-Share is a simple Node.js server that allows users to upload, download, and
 
 ## Versions
 
-- The `latest/` version is in the latest directory
-- In the `latest/html/` folder it seperates the html from the javascript leading to more customization.
-- In the `latest/chief/` folder it is compressed into one file.
-- The `archived/` has old versions.
+- The `releases/` stores current and old makes.
+- In the `releases/latest.zip` is the latest tested version
+- In the `releases/archived/` folder has all old versions.
 
-## Installation
+## Setup
 
 **wget the Repository**
    ```bash
-   wget https://github.com/NullAce/latest.zip
-   cd File-Share
+   wget https://github.com/NullAce/releases/latest.zip
+   unzip latest.zip
    ```
 
-**Install With Script**
-The install commands are located in the setup.sh bash script.
-Move the `setup.sh` to your desired folder for setup.
-```bash
-chmod +x ./setup.sh
-./setup.sh
-```
-
-**Install Without Script**
-If you would like to install this without using the setup script.
+**Setup**
    
 1. **Node.js**
-   Make sure node.js is properly installed. https://nodejs.org/en/download
+   Make sure node.js and npm is properly installed.
    ```bash
+   sudo apt install nodejs
+   sudo apt install npm
    node -v
    npm -v
    ```
 
 2. **Initialize project**
-   Run in the same folder as server of your choice.
+   Run in the same folder of the server.js file.
    ```bash
    npm init -y
    ```
 
-3. **Start Server**
+3. **Install Dependencies**
+   ```bash
+   npm install multer
+   ```
+
+4. **Create uploads folder**
+   Folder that stores all uploaded files.
+   ```bash
+   mkdir fileupload
+   ```
+
+5. **Start Server**
    ```bash
    node server.js
    ```
@@ -64,35 +67,3 @@ If you would like to install this without using the setup script.
 
    - The server will display a list of uploaded files.
    - Each file will have options to download or remove it from the server.
-
-## Code Explanation
-The core functionality of the server is implemented in the `server.js` file.
-
-1. **Dependencies**
-   - `http`: Built-in Node.js module to create a server.
-   - `formidable`: Module to handle file uploads.
-   - `fs`: Built-in Node.js module to interact with the file system.
-   - `path`: Built-in Node.js module to hangle and transform file paths.
-
-2. **File Upload Handling**
-
-   - Handles file uploads via a form submission.
-   - Stores uploaded files in the `fileupload` directory.
-   - Ensures file names are sanitized to prevent path injection.
-
-3. **Dynamic File Display**
-
-   - Reads the `fileupload` directory to list all uploaded files.
-   - Generates HTML to display the files with options to download or remove them.
-
-4. **File Download and Removal**
-
-   - Provides routes to download and remove files.
-   - Ensures file paths are sanitized and validated before performing any actions.
-
-## Security
-- Path Sanitization: File names are sanitized to prevent path injection attacks.
-- Restricted Directory: All file operations are confined to the `fileupload` directory.
-
-## Free Roam
-The `server.js` is meant to be a basic Node.js file exchange server over your local internet. Everything can be edited and changed to be how you wish to use this for your own needs.

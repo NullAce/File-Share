@@ -84,8 +84,6 @@ app.delete("/remove/:filename", function (req, res) {
 
 // Start the server and bind to the device's IP address
 var server = http.createServer(app);
-server.listen(8080, "192.168.1.165", function () {
-  console.log(
-    "Server running on http://192.168.1.165:8080 (accessible on your network)"
-  );
+server.listen(8080, "0.0.0.0", function () {
+  console.log("Server started on port 8080");
 });
