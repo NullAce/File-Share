@@ -13,7 +13,7 @@ npm -v # Should print "10.9.2".
 npm init -y
 
 # Install formidable npm package
-npm install formidable
+npm install multer
 
 # Create the uploads directory
 mkdir fileupload

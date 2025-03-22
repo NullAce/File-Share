@@ -1,34 +1,79 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>File Share</title>
-    <link rel="stylesheet" href="styles.css">
-</head>
-<body>
-    <h1>File Share</h1>
-    <form action="/fileupload" method="post" enctype="multipart/form-data">
-        <input type="file" name="filetoupload"><br>
-        <input type="submit" value="Upload">
-    </form>
-    <h2>Uploaded Files</h2>
-    <div id="file-list">
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <div class="container">
+      <h1>File Share</h1>
+      <div class="upload-section">
+        <form action="/fileupload" method="post" enctype="multipart/form-data">
+          <label for="filetoupload" class="file-label"
+            >Choose a file to upload:</label
+          >
+          <input type="file" name="filetoupload" id="filetoupload" />
+          <button type="submit" class="btn upload-btn">Upload</button>
+        </form>
+      </div>
+      <h2>Uploaded Files</h2>
+      <div id="file-list" class="file-list">
         <!-- File list will be populated here -->
+      </div>
     </div>
     <script>
-        async function fetchFiles() {
-            const response = await fetch('/files');
-            const files = await response.json();
-            const fileList = document.getElementById('file-list');
-            fileList.innerHTML = files.map(file => `
-                <p>${file} 
-                    <a href="/download/${encodeURIComponent(file)}">Download</a> 
-                    <a href="/remove/${encodeURIComponent(file)}">Remove</a>
-                </p>
-            `).join('');
+      async function fetchFiles() {
+        const response = await fetch("/files");
+        const files = await response.json();
+        const fileList = document.getElementById("file-list");
+        fileList.innerHTML = files
+          .map(
+            (file) => `
+                <div class="file-item">
+                    <span>${file}</span>
+                    <a href="/download/${encodeURIComponent(
+                      file
+                    )}" class="btn download-btn">Download</a>
+                    <button onclick="deleteFile('${file}')" class="btn remove-btn">Remove</button>
+                </div>
+            `
+          )
+          .join("");
+      }
+
+      async function deleteFile(fileName) {
+        const response = await fetch(
+          `/remove/${encodeURIComponent(fileName)}`,
+          {
+            method: "DELETE",
+          }
+        );
+        if (response.ok) {
+          fetchFiles(); // Refresh the file list after deletion
+        } else {
+          alert("Error deleting file");
         }
-        fetchFiles();
+      }
+
+      async function uploadFile(event) {
+        event.preventDefault();
+        const formData = new FormData(event.target);
+        const response = await fetch("/fileupload", {
+          method: "POST",
+          body: formData,
+        });
+        if (response.ok) {
+          fetchFiles(); // Refresh the file list after upload
+        } else {
+          alert("Error uploading file");
+        }
+      }
+
+      document.querySelector("form").addEventListener("submit", uploadFile);
+
+      fetchFiles();
     </script>
-</body>
+  </body>
 </html>

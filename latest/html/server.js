@@ -1,125 +1,91 @@
-var http = require('http');
-var formidable = require('formidable');
-var fs = require('fs');
-var path = require('path');
-var url = require('url');
+var http = require("http");
+var express = require("express");
+var multer = require("multer");
+var fs = require("fs");
+var path = require("path");
+
+// Initialize Express app
+var app = express();
 
 // Directory to store uploaded files
-var uploadDir = path.join(__dirname, 'fileupload');
+var uploadDir = path.join(__dirname, "fileupload");
 
 // Ensure the upload directory exists
 if (!fs.existsSync(uploadDir)) {
-  fs.mkdirSync(uploadDir);
+  fs.mkdirSync(uploadDir, { recursive: true });
 }
 
-// Function to sanitize file names
-function sanitizeFileName(fileName) {
-  return fileName.replace(/[^a-z0-9\.\-_\s]/gi, '_').replace(/_+/g, '_');
-}
+// Configure multer for file uploads
+var storage = multer.diskStorage({
+  destination: function (req, file, cb) {
+    cb(null, uploadDir);
+  },
+  filename: function (req, file, cb) {
+    // Sanitize file name
+    var sanitizedFileName = file.originalname.replace(/[^a-zA-Z0-9.\-_]/g, "_");
+    cb(null, sanitizedFileName);
+  },
+});
+var upload = multer({ storage: storage });
 
-http.createServer(function (req, res) {
-  var parsedUrl = url.parse(req.url, true);
-  var pathname = parsedUrl.pathname;
+// Serve static files (HTML, CSS, etc.)
+app.use(express.static(__dirname));
 
-  if (pathname == '/fileupload' && req.method.toLowerCase() === 'post') {
-    var form = new formidable.IncomingForm();
-    form.uploadDir = uploadDir; // Set the upload directory
-    form.keepExtensions = true; // Keep file extensions
-
-    form.parse(req, function (err, fields, files) {
-      if (err) {
-        res.writeHead(500, {'Content-Type': 'text/plain'});
-        res.end('Error uploading file');
-        return;
-      }
-
-      var oldPath = files.filetoupload.path;
-      var sanitizedFileName = sanitizeFileName(files.filetoupload.name);
-      var newPath = path.join(uploadDir, sanitizedFileName);
-
-      fs.rename(oldPath, newPath, function (err) {
-        if (err) {
-          res.writeHead(500, {'Content-Type': 'text/plain'});
-          res.end('Error saving file');
-          return;
-        }
-        res.writeHead(200, {'Content-Type': 'text/plain'});
-        res.end('File uploaded');
-      });
-    });
-  } else if (pathname == '/files') {
-    fs.readdir(uploadDir, function (err, files) {
-      if (err) {
-        res.writeHead(500, {'Content-Type': 'application/json'});
-        res.end(JSON.stringify({error: 'Error reading files'}));
-        return;
-      }
-      res.writeHead(200, {'Content-Type': 'application/json'});
-      res.end(JSON.stringify(files));
-    });
-  } else if (pathname.startsWith('/download/')) {
-    var fileName = decodeURIComponent(pathname.split('/download/')[1]);
-    var sanitizedFileName = sanitizeFileName(fileName);
-    var filePath = path.join(uploadDir, sanitizedFileName);
-
-    fs.access(filePath, fs.constants.F_OK, function (err) {
-      if (err) {
-        res.writeHead(404, {'Content-Type': 'text/plain'});
-        res.end('File not found');
-        return;
-      }
-
-      res.writeHead(200, {
-        'Content-Disposition': `attachment; filename="${sanitizedFileName}"`,
-        'Content-Type': 'application/octet-stream'
-      });
-      fs.createReadStream(filePath).pipe(res);
-    });
-  } else if (pathname.startsWith('/remove/')) {
-    var fileName = decodeURIComponent(pathname.split('/remove/')[1]);
-    var sanitizedFileName = sanitizeFileName(fileName);
-    var filePath = path.join(uploadDir, sanitizedFileName);
-
-    fs.access(filePath, fs.constants.F_OK, function (err) {
-      if (err) {
-        res.writeHead(404, {'Content-Type': 'text/plain'});
-        res.end('File not found');
-        return;
-      }
-
-      fs.unlink(filePath, function (err) {
-        if (err) {
-          res.writeHead(500, {'Content-Type': 'text/plain'});
-          res.end('Error removing file');
-          return;
-        }
-
-        res.writeHead(200, {'Content-Type': 'text/plain'});
-        res.end('File removed');
-      });
-    });
-  } else if (pathname == '/' || pathname == '/index.html') {
-    fs.readFile(path.join(__dirname, 'index.html'), function (err, data) {
-      if (err) {
-        res.writeHead(500, {'Content-Type': 'text/plain'});
-        res.end('Error loading page');
-        return;
-      }
-      res.writeHead(200, {'Content-Type': 'text/html'});
-      res.end(data);
-    });
-  } else if (pathname == '/styles.css') {
-    fs.readFile(path.join(__dirname, 'styles.css'), function (err, data) {
-      if (err) {
-        res.writeHead(500, {'Content-Type': 'text/plain'});
-        res.end('Error loading styles');
-        return;
-      }
-      res.writeHead(200, {'Content-Type': 'text/css'});
-      res.end(data);
-    });
-  } else {
-    res.writeHead(404, {'Content-Type': 'text/plain'});
-    res.end('Not found');
+// File upload endpoint
+app.post("/fileupload", upload.single("filetoupload"), function (req, res) {
+  if (!req.file) {
+    return res.status(400).json({ error: "No file uploaded" });
   }
-}).listen(8080);
+  // Respond with JSON instead of redirecting
+  res.status(200).json({ message: "File uploaded successfully" });
+});
+
+// List files endpoint
+app.get("/files", function (req, res) {
+  fs.readdir(uploadDir, function (err, files) {
+    if (err) {
+      return res.status(500).json({ error: "Error reading files" });
+    }
+    res.status(200).json(files);
+  });
+});
+
+// File download endpoint
+app.get("/download/:filename", function (req, res) {
+  var fileName = req.params.filename;
+  var filePath = path.join(uploadDir, fileName);
+
+  fs.access(filePath, fs.constants.F_OK, function (err) {
+    if (err) {
+      return res.status(404).send("File not found");
+    }
+    res.download(filePath, fileName);
+  });
+});
+
+// File delete endpoint
+app.delete("/remove/:filename", function (req, res) {
+  var fileName = req.params.filename;
+  var filePath = path.join(uploadDir, fileName);
+
+  fs.access(filePath, fs.constants.F_OK, function (err) {
+    if (err) {
+      return res.status(404).json({ error: "File not found" });
+    }
+
+    fs.unlink(filePath, function (err) {
+      if (err) {
+        return res.status(500).json({ error: "Error removing file" });
+      }
+      res.status(200).json({ message: "File deleted successfully" });
+    });
+  });
+});
+
+// Start the server and bind to the device's IP address
+var server = http.createServer(app);
+server.listen(8080, "192.168.1.165", function () {
+  console.log(
+    "Server running on http://192.168.1.165:8080 (accessible on your network)"
+  );
+});
